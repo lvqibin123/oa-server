@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lvqibin.oa.sys.dao.SysRoleMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lvqibin.oa.sys.model.SysRole">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="code" property="code" />
+        <result column="description" property="description" />
+        <result column="sequence" property="sequence" />
+        <result column="valid_state" property="validState" />
+        <result column="version" property="version" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, code, description, sequence, valid_state, version
+    </sql>
+    
+ <!-- 通过orgId获取该节点未分配的角色列表 -->
+   <select id="getNotRoleByOrgId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from sys_role
+    <include refid="sql_where"/>
+  </select>
+  
+  <sql id="sql_where">
+    <trim prefix="where" prefixOverrides="AND|OR">
+    	id not in ( SELECT role_id FROM sys_authorize where org_id = #{orgId,jdbcType=VARCHAR} )
+    	<if test="keyworlds !=null and keyworlds !='' and keyworlds !='undefined'">
+			<![CDATA[AND (
+				name LIKE '%'||#{keyworlds}||'%' 
+				OR code LIKE '%'||#{keyworlds}||'%' 
+				) ]]>
+		</if>
+    </trim>
+  </sql>
+</mapper>

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lvqibin.oa.sys.dao.SysOrgMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lvqibin.oa.sys.model.SysOrg">
+        <id column="id" property="id" />
+        <result column="parent" property="parent" />
+        <result column="all_name" property="allName" />
+        <result column="all_id" property="allId" />
+        <result column="name" property="name" />
+        <result column="code" property="code" />
+        <result column="long_name" property="longName" />
+        <result column="all_code" property="allCode" />
+        <result column="org_kind_id" property="orgKindId" />
+        <result column="sequence" property="sequence" />
+        <result column="valid_state" property="validState" />
+        <result column="level" property="level" />
+        <result column="phone" property="phone" />
+        <result column="fax" property="fax" />
+        <result column="address" property="address" />
+        <result column="zip" property="zip" />
+        <result column="description" property="description" />
+        <result column="person_id" property="personId" />
+        <result column="node_kind" property="nodeKind" />
+        <result column="version" property="version" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, parent, all_name, all_id, name, code, long_name, all_code, org_kind_id, sequence, valid_state, level, phone, fax, address, zip, description, person_id, node_kind, version
+    </sql>
+<!--  根据ID删除该组织机构和其子组织机构  -->
+  <delete id="deleteOrgWithChildByID" parameterType="java.lang.String">
+    <!-- 可能是mysql的一个bug 不能删除最后一层的数据 ，但是将其改为查询却能查询出来    -->
+    <!-- delete from sys_org
+    where FIND_IN_SET(id, (getOrgChildList(#{id,jdbcType=VARCHAR}))) -->
+    DELETE FROM sys_org 
+		WHERE
+		    id IN (SELECT 
+		        t.id
+		    FROM
+		        (SELECT 
+		            id
+		        FROM
+		            sys_org
+		        
+		        WHERE
+		            FIND_IN_SET(id, (getOrgChildList(#{id,jdbcType=VARCHAR})))) t)
+  </delete>
+  
+  <!--
+      	根据id获取最大的 排序号
+    -->
+  <select id="getMaxSequence" parameterType="java.lang.String" resultType="java.lang.Long" >
+    SELECT ifnull(MAX(sequence),0)+1 AS sequence  FROM sys_org 
+     <include refid="sql_where" />
+  </select>
+  <sql id="sql_where">
+    <trim prefix="where" prefixOverrides="AND|OR">
+    	<if test="id !=null and id !='' and id !='undefined'">
+			<![CDATA[ AND parent = #{id,jdbcType=VARCHAR} ]]>
+		</if>
+    </trim>
+  </sql>
+  
+  <!--
+      	对组织机构的 fName,fCode 字段的值进行修正 id 修改的起始ID 为all则全集修正 否则只修正正id和其子节点
+    -->
+  <update id="correctionOrg"  parameterType="java.lang.String">
+    update sys_org set all_name = getByColumnName(id,'name') , all_code = getByColumnName(id,'code'),version = version+1 
+    <include refid="sql_where_1" />
+  </update>
+  
+   <sql id="sql_where_1">
+    <trim prefix="where" prefixOverrides="AND|OR">
+    	<![CDATA[ id <> 'root'  ]]>
+    	<if test="id !=null and id !='' and id !='undefined' and id !='all' ">
+			<![CDATA[ AND FIND_IN_SET(id,getOrgChildList( #{id,jdbcType=VARCHAR} )) ]]>
+		</if>
+    </trim>
+  </sql>
+</mapper>

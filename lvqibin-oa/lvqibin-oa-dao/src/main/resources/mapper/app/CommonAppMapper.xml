@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lvqibin.oa.app.dao.CommonAppMapper">
+  
+  
+   <!-- 根据 列名、列值、表名和主键ID 查询记录数 -->
+  <select id="getDataCount" parameterType="Map" resultType="java.lang.Long">
+   	 SELECT  COUNT(1) FROM ${tableName} where 
+		${ columnName } = #{columnValue,jdbcType=VARCHAR}
+		<if test="idColumnName != '' and idColumnName != null and idColumnName !='undefined' 
+			and  idColumnValue != '' and idColumnValue != null and idColumnValue !='undefined'">
+			<![CDATA[  AND ${ idColumnName } <> #{idColumnValue,jdbcType=VARCHAR} ]]>
+		</if>
+		<if test="wheres != '' and wheres != null and wheres !='undefined' ">
+			AND (${wheres})
+		</if>
+   </select>
+   
+</mapper>

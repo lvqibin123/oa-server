@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lvqibin.oa.sys.dao.SysMenuMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lvqibin.oa.sys.model.SysMenu">
+        <id column="id" property="id" />
+        <result column="parent" property="parent" />
+        <result column="code" property="code" />
+        <result column="name" property="name" />
+        <result column="url" property="url" />
+        <result column="sequence" property="sequence" />
+        <result column="valid_state" property="validState" />
+        <result column="level" property="level" />
+        <result column="version" property="version" />
+        <result column="type" property="type" />
+        <result column="menu_type" property="menuType" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, parent, code, name, url, sequence, valid_state, level, version, type, menu_type
+    </sql>
+ <!-- 根据 当前人员orgID 、父节点paren 和菜单类型type 获取授权的菜单节点  -->
+  <select id="getMenuByTypeAndParentAndUserOrgID" parameterType="Map" resultMap="BaseResultMap">
+    select
+    DISTINCT t.id,
+                t.parent,
+                t.code,
+                t.name,
+                t.url,
+                t.sequence,
+                t.valid_state,
+                t.level,
+                t.version,
+                t.type,
+                t.menu_type
+    from sys_menu t
+     right join (SELECT sp.menu_id
+               FROM sys_permission sp
+              INNER JOIN (SELECT role_id
+                           FROM sys_authorize
+                           <if test="orgID !=null and orgID !='' and orgID !='undefined'">
+                          WHERE FIND_IN_SET(org_id,
+                                            (GETORGPARENTLIST(#{orgID,jdbcType=VARCHAR})))
+                             </if>               
+                                            ) au
+                 ON au.role_id = sp.role_id) p
+    on p.menu_id = t.id
+    <include refid="sql_where_1" />
+    ORDER BY t.sequence
+  </select>
+  
+  <sql id="sql_where_1">
+    <trim prefix="where" prefixOverrides="AND|OR">
+    	t.id is not null 
+    	<!-- <if test="orgID !=null and orgID !='' and orgID !='undefined'">
+			<![CDATA[ id IN (SELECT 
+			            sp.menu_id
+			        FROM
+			            sys_permission sp
+			                INNER JOIN
+			            (SELECT 
+			                role_id
+			            FROM
+			                sys_authorize
+			            WHERE
+			                FIND_IN_SET(org_id, (getOrgParentList(#{orgID,jdbcType=VARCHAR})))) au ON au.role_id = sp.role_id) 
+			 ]]>
+		</if>
+ -->		<if test="paren !=null and paren !='' and paren !='undefined'">
+			<![CDATA[ AND t.parent = #{paren,jdbcType=VARCHAR} ]]>
+		</if>
+		<if test="type !=null and type !='' and type !='undefined'">
+			<![CDATA[ AND t.type = #{type,jdbcType=VARCHAR} ]]>
+		</if>
+		<if test="menuType != null">
+			and 
+			(
+			<foreach item="item" index="index" collection="menuType" open="(" separator="or" close=")">
+		  		t.menu_type = '${item}'
+			</foreach>
+			)
+		</if>
+    </trim>
+  </sql>
+  
+    <!--
+      	获取最大的 排序号 如果同级节点id为parent 不能为空，如果子节点 id为id
+    -->
+  <select id="getMaxSequence" parameterType="java.lang.String" resultType="java.lang.Long" >
+    SELECT ifnull(MAX(sequence),0)+1 AS sequence  FROM sys_menu 
+     <include refid="sql_where" />
+  </select>
+  <sql id="sql_where">
+    <trim prefix="where" prefixOverrides="AND|OR">
+    	<if test="id !=null and id !='' and id !='undefined'">
+			<![CDATA[ AND parent = #{id,jdbcType=VARCHAR} ]]>
+		</if>
+    </trim>
+  </sql>
+  
+    <!--  根据ID删除该菜单和其子菜单  -->
+  <delete id="deleteMenuWithChildByID" parameterType="java.lang.String">
+    delete from sys_menu
+    where FIND_IN_SET(id, (getMenuChildList(#{id,jdbcType=VARCHAR})))
+  </delete>
+  
+</mapper>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lvqibin.oa.sys.dao.SysAuthorizeMapper">
+
+   <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lvqibin.oa.sys.model.SysAuthorize">
+        <id column="id" property="id" />
+        <result column="role_id" property="roleId" />
+        <result column="org_id" property="orgId" />
+        <result column="description" property="description" />
+        <result column="creator_id" property="creatorId" />
+        <result column="create_time" property="createTime" />
+        <result column="version" property="version" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, role_id, org_id, description, creator_id, create_time, version
+    </sql>
+    
+  <resultMap id="CustomBaseResultMap" type="com.lvqibin.oa.sys.model.SysAuthorizeCustom"  extends="BaseResultMap"  >
+    <result column="authorizeRoleName" jdbcType="VARCHAR" property="authorizeRoleName" />
+  </resultMap>
+  
+  <!--  通过角色表sys_role关联出来角色 -->
+ <select id="selectAllByOrgId"  parameterType="java.lang.String" resultMap="CustomBaseResultMap">
+    select
+      distinct  <include refid="Base_Column_List" />
+   ,ifnull((SELECT name FROM sys_role where id = role_id ),'') as authorizeRoleName
+    from sys_authorize
+    <include refid="sql_where"/>
+     order by create_time
+  </select>
+  <sql id="sql_where">
+    <trim prefix="where" prefixOverrides="AND|OR">
+    	<if test="orgId !=null and orgId !='' and orgId !='undefined' and showParenRole !=null and showParenRole !='' and showParenRole !='undefined' and showParenRole =='false' ">
+			<![CDATA[ AND org_id = #{orgId,jdbcType=VARCHAR} ]]>
+		</if>
+		<if test="orgId !=null and orgId !='' and orgId !='undefined' and showParenRole !=null and showParenRole !='' and showParenRole !='undefined' and showParenRole =='true' ">
+			<![CDATA[ AND org_id in (select id  from sys_org where FIND_IN_SET(id,getOrgParentList(#{orgId,jdbcType=VARCHAR} ))) ]]>
+		</if>
+    </trim>
+  </sql>
+  
+   <!-- 排量保存 -->
+  <insert id="insertbatch" parameterType="java.util.List" useGeneratedKeys="false"> 
+		   insert into sys_authorize ( id, role_id, org_id, description, creator_id, create_time, version) values
+		<foreach collection="list" index="index" item="item" separator=",">
+  		  (
+		      #{item.id,jdbcType=VARCHAR}, 
+		      #{item.roleId,jdbcType=VARCHAR}, 
+		      #{item.orgId,jdbcType=VARCHAR}, 
+      		  #{item.description,jdbcType=VARCHAR}, 
+      		  #{item.creatorId,jdbcType=VARCHAR}, 
+      		  #{item.createTime,jdbcType=TIMESTAMP}, 
+      		  #{item.version,jdbcType=INTEGER}
+		   )
+		</foreach>
+	</insert>
+	
+</mapper>

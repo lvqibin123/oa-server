@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lvqibin.oa.sys.dao.CommonSysMapper">
+  
+  
+   <!-- 根据 列名、列值、表名和主键ID 查询记录数 -->
+  <select id="getDataCount" parameterType="Map" resultType="java.lang.Long">
+   	 SELECT  COUNT(1) FROM ${tableName} where 
+		${ columnName } = #{columnValue,jdbcType=VARCHAR}
+		<if test="idColumnName != '' and idColumnName != null and idColumnName !='undefined' 
+			and  idColumnValue != '' and idColumnValue != null and idColumnValue !='undefined'">
+			<![CDATA[  AND ${ idColumnName } <> #{idColumnValue,jdbcType=VARCHAR} ]]>
+		</if>
+		<if test="wheres != '' and wheres != null and wheres !='undefined' ">
+			AND (${wheres})
+		</if>
+   </select>
+     <!-- 获取省份   -->
+    <select id="queryProvice" parameterType="Map" resultType="java.util.HashMap">
+        SELECT t.provice_id,t.provice_name FROM  sys_provice t
+        where 1=1
+        <if test="keyWord !=null and keyWord !='' and keyWord !='undefined'">
+            and t.provice_name LIKE  CONCAT('%',#{keyWord,jdbcType=VARCHAR},'%')
+        </if>
+    </select>
+
+    <!-- 获取城市根据省份id   -->
+    <select id="queryCityByProviceId" parameterType="Map" resultType="java.util.HashMap">
+        SELECT t.city_id,t.city_name,(SELECT count(c.city_id) FROM sys_county c where c.city_id= t.city_id group by c.city_id ) as isLeaf FROM sys_city  t where t.province_id = #{provinceId,jdbcType=VARCHAR}
+        <if test="keyWord !=null and keyWord !='' and keyWord !='undefined'">
+            and t.city_name LIKE  CONCAT('%',#{keyWord,jdbcType=VARCHAR},'%')
+        </if>
+    </select>
+
+    <!-- 获取县根据城市id   -->
+    <select id="queryCountyByCityId" parameterType="Map" resultType="java.util.HashMap">
+        SELECT t.county_id,t.county_name,(SELECT count(tn.county_id) FROM sys_town tn where tn.county_id =t.county_id group by tn.county_id)  as isLeaf FROM sys_county t where t.city_id= #{cityId,jdbcType=VARCHAR}
+        <if test="keyWord !=null and keyWord !='' and keyWord !='undefined'">
+            and t.county_name LIKE  CONCAT('%',#{keyWord,jdbcType=VARCHAR},'%')
+        </if>
+    </select>
+
+    <!-- 获取乡镇根据县id   -->
+    <select id="queryTownByCountyId" parameterType="Map" resultType="java.util.HashMap">
+        SELECT t.town_id,t.town_name,(SELECT count(v.town_id) FROM sys_village v where v.town_id  =t.town_id group by v.town_id) as isLeaf FROM sys_town t where t.county_id = #{countyId,jdbcType=VARCHAR}
+        <if test="keyWord !=null and keyWord !='' and keyWord !='undefined'">
+            and t.town_name LIKE  CONCAT('%',#{keyWord,jdbcType=VARCHAR},'%')
+        </if>
+    </select>
+
+    <!-- 获取村根据乡镇id   -->
+    <select id="queryVillageByTownId" parameterType="Map" resultType="java.util.HashMap">
+        SELECT t.village_id,t.village_name FROM sys_village t where t.town_id  = #{townId,jdbcType=VARCHAR}
+        <if test="keyWord !=null and keyWord !='' and keyWord !='undefined'">
+            and t.village_name LIKE  CONCAT('%',#{keyWord,jdbcType=VARCHAR},'%')
+        </if>
+    </select>
+</mapper>

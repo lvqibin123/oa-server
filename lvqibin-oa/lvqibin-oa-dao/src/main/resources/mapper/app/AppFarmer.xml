@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lvqibin.oa.app.dao.AppFarmerMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lvqibin.oa.app.model.AppFarmer">
+        <id column="id" property="id" />
+        <result column="version" property="version" />
+        <result column="name" property="name" />
+        <result column="code" property="code" />
+        <result column="simple_name" property="simpleName" />
+        <result column="sex" property="sex" />
+        <result column="mobile" property="mobile" />
+        <result column="idcard" property="idcard" />
+        <result column="bank_card" property="bankCard" />
+        <result column="family_address" property="familyAddress" />
+        <result column="province" property="province" />
+        <result column="city" property="city" />
+        <result column="county" property="county" />
+        <result column="piggery_address" property="piggeryAddress" />
+        <result column="area" property="area" />
+        <result column="max_size" property="maxSize" />
+        <result column="longitude" property="longitude" />
+        <result column="latitude" property="latitude" />
+        <result column="max_radius" property="maxRadius" />
+        <result column="login_name" property="loginName" />
+        <result column="password" property="password" />
+        <result column="is_allow_login" property="isAllowLogin" />
+        <result column="attachment" property="attachment" />
+        <result column="description" property="description" />
+        <result column="remark" property="remark" />
+        <result column="create_time" property="createTime" />
+        <result column="modify_use_id" property="modifyUseId" />
+        <result column="modify_time" property="modifyTime" />
+        <result column="login_fail_count" property="loginFailCount" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, version, name, code, simple_name, sex, mobile, idcard, bank_card, family_address, province, city, county, piggery_address, area, max_size, longitude, latitude, max_radius, login_name, password, is_allow_login, attachment, description, remark, create_time, modify_use_id, modify_time, login_fail_count
+    </sql>
+
+</mapper>

@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lvqibin.oa.sys.dao.SysPersonMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lvqibin.oa.sys.model.SysPerson">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="code" property="code" />
+        <result column="id_card" property="idCard" />
+        <result column="numb" property="numb" />
+        <result column="login_name" property="loginName" />
+        <result column="password" property="password" />
+        <result column="password_time_limit" property="passwordTimeLimit" />
+        <result column="password_modify_time" property="passwordModifyTime" />
+        <result column="main_org_id" property="mainOrgId" />
+        <result column="safe_level_id" property="safeLevelId" />
+        <result column="sequence" property="sequence" />
+        <result column="valid_state" property="validState" />
+        <result column="description" property="description" />
+        <result column="photo" property="photo" typeHandler="com.lvqibin.oa.common.StringBlobTypeHandler"/>
+        <result column="photo_last_modified" property="photoLastModified" />
+        <result column="sex" property="sex" />
+        <result column="birthday" property="birthday" />
+        <result column="join_date" property="joinDate" />
+        <result column="home_place" property="homePlace" />
+        <result column="country" property="country" />
+        <result column="province" property="province" />
+        <result column="city" property="city" />
+        <result column="degree" property="degree" />
+        <result column="graduate_school" property="graduateSchool" />
+        <result column="speciality" property="speciality" />
+        <result column="school_length" property="schoolLength" />
+        <result column="title" property="title" />
+        <result column="marriage" property="marriage" />
+        <result column="card_no" property="cardNo" />
+        <result column="card_kind" property="cardKind" />
+        <result column="family_address" property="familyAddress" />
+        <result column="zip" property="zip" />
+        <result column="msn" property="msn" />
+        <result column="qq" property="qq" />
+        <result column="mail" property="mail" />
+        <result column="mobile_phone" property="mobilePhone" />
+        <result column="family_phone" property="familyPhone" />
+        <result column="office_phone" property="officePhone" />
+        <result column="english_name" property="englishName" />
+        <result column="version" property="version" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, code, id_card, numb, login_name, password, password_time_limit, password_modify_time, main_org_id, safe_level_id, sequence, valid_state, description, photo, photo_last_modified, sex, birthday, join_date, home_place, country, province, city, degree, graduate_school, speciality, school_length, title, marriage, card_no, card_kind, family_address, zip, msn, qq, mail, mobile_phone, family_phone, office_phone, english_name, version
+    </sql>
+    
+	 <!--  根据sys_org  的ID 删除 与其关联的组织机构和子组织机构的人员     -->
+	  <delete id="deletePersonByOrgID" parameterType="java.lang.String">
+	    delete from sys_person
+	    where FIND_IN_SET(id,
+	            (SELECT 
+	                    GROUP_CONCAT(person_id) AS personID
+	                FROM
+	                    sys_org
+	                WHERE
+	                    FIND_IN_SET(id,
+	                            (getOrgChildList(#{id,jdbcType=VARCHAR})))
+	                        AND person_id IS NOT NULL))
+	  </delete>
+</mapper>

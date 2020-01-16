@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lvqibin.oa.sys.dao.CodeHelpMapper">
+
+ 	<resultMap id="BaseResultMap" type="com.lvqibin.oa.sys.model.TableColumns">
+ 		<result property="id" jdbcType="VARCHAR" column="id" />
+	    <result property="columnName" jdbcType="VARCHAR" column="COLUMN_NAME" />
+	    <result property="dataType" jdbcType="VARCHAR" column="DATA_TYPE" />
+	    <result property="columnComment" jdbcType="VARCHAR" column="COLUMN_COMMENT" />
+	    <result property="columnDefault" jdbcType="VARCHAR" column="COLUMN_DEFAULT" typeHandler="com.lvqibin.oa.common.StringBlobTypeHandler" />
+  	</resultMap>
+	<!--  根据 table_schema表空间 获取所有的表名称  -->
+	<select id="getTableBySchema" parameterType="Map" resultType="java.util.HashMap">
+	   SELECT 
+		     concat((@rowno:=@rowno + 1),'')  AS id,table_name
+		FROM
+		    information_schema.tables ,(SELECT @rowno:=0) b
+		 <include refid="sql_where"/>
+   </select>
+   
+   <sql id="sql_where">
+    <trim prefix="where" prefixOverrides="AND|OR">
+    	table_type = 'base table'
+    	<if test="tableSchema !=null and tableSchema !='' and tableSchema !='undefined'">
+			<![CDATA[AND  table_schema = #{tableSchema,jdbcType=VARCHAR} ]]>
+		</if>
+		<if test="tableName !=null and tableName !='' and tableName !='undefined'">
+			<![CDATA[AND  table_name  LIKE CONCAT('%',#{tableName,jdbcType=VARCHAR},'%')  ]]>
+		</if>
+    </trim>
+  </sql>
+  
+   <!--  根据 table_name表名 获取表的字段名称、字段默认值、字段类型和字段描述  -->
+	<select id="getColumnByTableName" parameterType="Map" resultMap="BaseResultMap">
+		select   concat((@rowno:=@rowno + 1),'')  AS id,COLUMN_NAME,DATA_TYPE,COLUMN_COMMENT,COLUMN_DEFAULT 
+		from information_schema.COLUMNS ,(SELECT @rowno:=0) b
+		<include refid="sql_where_1"/>
+   </select>
+   
+   <sql id="sql_where_1">
+    <trim prefix="where" prefixOverrides="AND|OR">
+    	<if test="tableSchema !=null and tableSchema !='' and tableSchema !='undefined'">
+			<![CDATA[AND  TABLE_SCHEMA = #{tableSchema,jdbcType=VARCHAR} ]]>
+		</if>
+		<if test="tableName !=null and tableName !='' and tableName !='undefined'">
+			<![CDATA[AND  table_name = #{tableName,jdbcType=VARCHAR} ]]>
+		</if>
+		<if test="columnName !=null and columnName !='' and columnName !='undefined'">
+			<![CDATA[AND  COLUMN_NAME  LIKE CONCAT('%',#{columnName,jdbcType=VARCHAR},'%')  ]]>
+		</if>
+    </trim>
+  </sql>
+</mapper>

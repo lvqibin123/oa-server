@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lvqibin.oa.sys.dao.SysDictionaryDetailMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="com.lvqibin.oa.sys.model.SysDictionaryDetail">
+        <id column="id" property="id" />
+        <result column="version" property="version" />
+        <result column="main_id" property="mainId" />
+        <result column="name" property="name" />
+        <result column="order_no" property="orderNo" />
+        <result column="enabled_code" property="enabledCode" />
+        <result column="code" property="code" />
+        <result column="remark" property="remark" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, version, main_id, name, order_no, enabled_code, code, remark
+    </sql>
+    
+    <!--
+      	根据主表ID（mainID）获取最大的 排序号(order_no)
+    -->
+	  <select id="getMaxOrderNo" parameterType="java.lang.String" resultType="java.lang.Long" >
+	    SELECT ifnull(MAX(order_no),0)+1 AS order_no  FROM sys_dictionary_detail 
+	     <include refid="sql_where" />
+	  </select>
+	  
+  <sql id="sql_where">
+    <trim prefix="where" prefixOverrides="AND|OR">
+    	<if test="mainId !=null and mainId !='' and mainId !='undefined'">
+			<![CDATA[ AND main_id = #{mainId,jdbcType=VARCHAR} ]]>
+		</if>
+    </trim>
+  </sql>
+    
+ 	<!--  根据数据字典主表 code 获取 数据字典从表中的数据  -->
+	  <select id="getDictionaryDetailByMainCode" parameterType="java.lang.String" resultMap="BaseResultMap" >
+	    select
+	      distinct <include refid="Base_Column_List" />
+	    from sys_dictionary_detail
+	    where main_id = ( select  distinct id  from sys_dictionary where code = #{code,jdbcType=VARCHAR} and enabled_code = '1' )
+	  </select>
+</mapper>
