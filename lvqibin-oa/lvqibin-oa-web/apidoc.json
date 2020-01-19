@@ -3,6 +3,6 @@
   "version": "1.0.0",
   "description": "开发技术接口文档",
   "title": "API文档",
-  "url" : "http://192.168.3.188:8089/oa",
-  "sampleUrl":"http://192.168.3.188:8089/oa"
+  "url" : "http://127.0.0.1:8089/oa",
+  "sampleUrl":"http://127.0.0.1:8089/oa"
 }
