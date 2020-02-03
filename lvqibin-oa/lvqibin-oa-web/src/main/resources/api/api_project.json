@@ -3,14 +3,27 @@
   "version": "1.0.0",
   "description": "开发技术接口文档",
   "title": "API文档",
+<<<<<<< HEAD
   "url": "http://192.168.3.188:8089/oa",
   "sampleUrl": "http://192.168.3.188:8089/oa",
+=======
+  "url": "http://127.0.0.1:8089/oa",
+  "sampleUrl": "http://127.0.0.1:8089/oa",
+>>>>>>> 8ed405227b46e717893b0e940f2726eccf61e39e
   "defaultVersion": "0.0.0",
   "apidoc": "0.3.0",
   "generator": {
     "name": "apidoc",
+<<<<<<< HEAD
     "time": "2020-01-14T06:37:59.094Z",
     "url": "http://apidocjs.com",
     "version": "0.17.7"
   }
 }
+=======
+    "time": "2020-01-19T01:23:28.641Z",
+    "url": "http://apidocjs.com",
+    "version": "0.17.7"
+  }
+}
+>>>>>>> 8ed405227b46e717893b0e940f2726eccf61e39e
