@@ -21,9 +21,9 @@
 #####   -lvqibin-oa-web 提供的服务接口
 ### 三、如何使用
 #### 1.初始化数据库
-工具的选择：建议使用mysql 官方提供的工具 MySQL Workbench 
-创建oa_app和oa_sys表空间
-导入数据：导入lvqibin-oa\DB\data\20200115的数据
+工具的选择：建议使用mysql 官方提供的工具 MySQL Workbench <br> 
+创建oa_app和oa_sys表空间 <br> 
+导入数据：导入lvqibin-oa\DB\data\20200115的数据 <br> 
 #### 2.引入项目
 通过maven方式导入项目
 #### 3.启动项目
