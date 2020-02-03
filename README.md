@@ -16,17 +16,16 @@
 >>tables 系统库的建表语句
 
 >doc 文档主要是数据库的设计文档
->lvqibin-oa-common 公共模块
->lvqibin-oa-dao mybatis-plus的xml和mapper文件
->lvqibin-oa-model 实体bean文件
->lvqibin-oa-service service文件
->lvqibin-oa-web 提供的服务接口
 
->DB 存放数据库相关的文件
->>data 历史版本的数据  
->>function mysql的function  
->>>>平衡二叉树  
->>>>>满二叉树  
+>lvqibin-oa-common 公共模块
+
+>lvqibin-oa-dao mybatis-plus的xml和mapper文件
+
+>lvqibin-oa-model 实体bean文件
+
+>lvqibin-oa-service service文件
+
+>lvqibin-oa-web 提供的服务接口
 
 ### 三、如何使用
 #### 1.初始化数据库
