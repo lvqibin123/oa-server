@@ -7,12 +7,14 @@
 ## 4.前端框架采用angular2的NG-ALAIN的框架：https://ng-alain.com/zh
 ### 二、文件目录介绍
 #### lvqibin-oa 项目更目录
+
 >DB 存放数据库相关的文件
 >>data 历史版本的数据
 >>function mysql的function
 >>mwb myql的建模文件
 >>others 一些其他的文件
 >>tables 系统库的建表语句
+
 >doc 文档主要是数据库的设计文档
 >lvqibin-oa-common 公共模块
 >lvqibin-oa-dao mybatis-plus的xml和mapper文件
@@ -20,9 +22,9 @@
 >lvqibin-oa-service service文件
 >lvqibin-oa-web 提供的服务接口
 
->数据结构  
->>树  
->>>二叉树  
+>DB 存放数据库相关的文件
+>>data 历史版本的数据  
+>>function mysql的function  
 >>>>平衡二叉树  
 >>>>>满二叉树  
 
