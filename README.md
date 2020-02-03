@@ -9,10 +9,15 @@
 #### lvqibin-oa 项目更目录
 
 >DB 存放数据库相关的文件
+
 >>data 历史版本的数据
+
 >>function mysql的function
+
 >>mwb myql的建模文件
+
 >>others 一些其他的文件
+
 >>tables 系统库的建表语句
 
 >doc 文档主要是数据库的设计文档
