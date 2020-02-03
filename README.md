@@ -19,6 +19,13 @@
 >lvqibin-oa-model 实体bean文件
 >lvqibin-oa-service service文件
 >lvqibin-oa-web 提供的服务接口
+
+>数据结构  
+>>树  
+>>>二叉树  
+>>>>平衡二叉树  
+>>>>>满二叉树  
+
 ### 三、如何使用
 #### 1.初始化数据库
 工具的选择：建议使用mysql 官方提供的工具 MySQL Workbench <br> 
