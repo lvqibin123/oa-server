@@ -43,3 +43,6 @@
 #### 4.访问
 通过：http://127.0.0.1:8089/oa即可访问
 
+### 四、初始化数据库
+在mysql中执行
+![Image text](https://github.com/yguo18/CircleFollowButton/raw/master/Assets/Image/xiaoguotu.png)
