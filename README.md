@@ -72,4 +72,4 @@
 
 ### 五、接口api采用 apidoc
 
-![Image text](https://github.com/lvqibin123/oa-server/blob/master/lvqibin-oa/gitImgs/%E6%8E%A5%E5%8F%A3api1.png) <br>
+![Image text](https://github.com/lvqibin123/oa-server/blob/master/lvqibin-oa/gitImgs/接口api1.png) <br>
