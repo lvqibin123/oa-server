@@ -41,5 +41,35 @@
 通过maven方式导入项目
 #### 3.启动项目
 #### 4.访问
-通过：http://127.0.0.1:8089/oa即可访问
+通过：http://127.0.0.1:8089/oa即可访问<br> 
+用户名：system或test密码都是1234456
 
+### 四、初始化数据库
+#### 创建表空间
+##### 方式一： 在mysql中执行 <br> 
+![Image text](https://github.com/lvqibin123/oa-server/blob/master/lvqibin-oa/gitImgs/%E5%88%9B%E5%BB%BA%E8%A1%A8%E7%A9%BA%E9%97%B4%E6%96%87%E4%BB%B6.png) <br> 
+中的sql语句
+##### 方式二： 使用MySQL Workbench <br> 
+![Image text](https://github.com/lvqibin123/oa-server/blob/master/lvqibin-oa/gitImgs/%E5%88%9B%E5%BB%BA%E8%A1%A8%E7%A9%BA%E9%97%B41.png) <br> 
+![Image text](https://github.com/lvqibin123/oa-server/blob/master/lvqibin-oa/gitImgs/%E5%88%9B%E5%BB%BA%E8%A1%A8%E7%A9%BA%E9%97%B42.png) <br>
+![Image text](https://github.com/lvqibin123/oa-server/blob/master/lvqibin-oa/gitImgs/%E5%88%9B%E5%BB%BA%E8%A1%A8%E7%A9%BA%E9%97%B43.png) <br>
+
+#### 初始化数据
+使用 MySQL Workbench <br> 
+![Image text](https://github.com/lvqibin123/oa-server/blob/master/lvqibin-oa/gitImgs/%E5%AF%BC%E5%85%A5%E6%95%B0%E6%8D%AE1.png) <br>
+![Image text](https://github.com/lvqibin123/oa-server/blob/master/lvqibin-oa/gitImgs/%E5%AF%BC%E5%85%A5%E6%95%B0%E6%8D%AE2.png) <br>
+![Image text](https://github.com/lvqibin123/oa-server/blob/master/lvqibin-oa/gitImgs/%E5%AF%BC%E5%85%A5%E6%95%B0%E6%8D%AE3.png) <br>
+![Image text](https://github.com/lvqibin123/oa-server/blob/master/lvqibin-oa/gitImgs/%E5%AF%BC%E5%85%A5%E6%95%B0%E6%8D%AE5.png) <br>
+
+
+#### 查看表结构
+使用 MySQL Workbench <br> 
+可以通过 mwb 文件下的文件查看数据库表结构 <br> 
+![Image text](https://github.com/lvqibin123/oa-server/blob/master/lvqibin-oa/gitImgs/%E6%9F%A5%E7%9C%8B%E8%A1%A8%E7%BB%93%E6%9E%841.png) <br>
+![Image text](https://github.com/lvqibin123/oa-server/blob/master/lvqibin-oa/gitImgs/%E6%9F%A5%E7%9C%8B%E8%A1%A8%E7%BB%93%E6%9E%842.png) <br>
+![Image text](https://github.com/lvqibin123/oa-server/blob/master/lvqibin-oa/gitImgs/%E6%9F%A5%E7%9C%8B%E8%A1%A8%E7%BB%93%E6%9E%843.png) <br>
+![Image text](https://github.com/lvqibin123/oa-server/blob/master/lvqibin-oa/gitImgs/%E6%9F%A5%E7%9C%8B%E8%A1%A8%E7%BB%93%E6%9E%844.png) <br>
+
+### 五、接口api采用 apidoc
+
+![Image text](https://github.com/lvqibin123/oa-server/blob/master/lvqibin-oa/gitImgs/%E6%8E%A5%E5%8F%A3api1.png) <br>
